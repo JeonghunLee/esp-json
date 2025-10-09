@@ -2,8 +2,13 @@
 
 </br>
 
-* TEST Board: ESP32-S3 Devkit EVM        
-* ESP-IDF: v5.4      
+* Embedded Board    
+    * TEST Board: ESP32-S3 Devkit EVM        
+    * ESP-IDF: v5.4      
+
+
+JSON Encode/Decode를 Embedded Board에서 TEST 하기 위해서 ESP32-S3 EVM 선택     
+추후 RTOS에서 활용???     
 
 </br>
 
@@ -34,7 +39,13 @@ Linux 의 Device Tree Blob/Compiler (DTB/DTC) 와 libfdt 를 이용하여, 쉽�
     - JSON Parsing to Bin Encoding 기능 구현     
     - Bin Decoding 은 구현      
 
+</br> 
 
-
+## DSL(Domain Specific Language)
 
 </br>    
+
+ESP-IDF의 경우, 별도의 yaml 을 자동으로 사용하는데, 이부분 확인   
+
+
+</br> 
