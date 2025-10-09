@@ -1,0 +1,6 @@
+{
+  STR_32_DEVICE_NAME: "esp32s3",
+  STR_64_OWNER: "Jeonghun",
+  INT16_RATE: 480,
+  UINT32_PACKET_MAX: 1048576
+}
