@@ -2,6 +2,12 @@
 
 </br>
 
+TEST Board: ESP32-S3 Devkit EVM 
+ESP-IDF: v5.4
+
+</br>
+
+
 ## DTB/DTC 와 libfdt
 
 </br>
