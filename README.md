@@ -10,6 +10,11 @@
     1. JSON Parsing to Bin Encoding               
     2. Bin 로 Decoding            
 
-추후 암호화? AES 대칭키?    
+</br>
+
+* 추후 더 테스트 한다면     
+    * 암호화? AES 대칭키?  확장? 
+    * DSL 도 ??
+
 
 </br>
