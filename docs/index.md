@@ -2,8 +2,8 @@
 
 </br>
 
-TEST Board: ESP32-S3 Devkit EVM 
-ESP-IDF: v5.4
+* TEST Board: ESP32-S3 Devkit EVM        
+* ESP-IDF: v5.4      
 
 </br>
 
