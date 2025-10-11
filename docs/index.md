@@ -26,14 +26,19 @@ Linux 의 Device Tree Blob/Compiler (DTB/DTC) 와 libfdt 를 이용하여, 쉽�
 
 </br>
 
+이 부분은 과연 FreeRTOS에서 필요한가??
+필요하다면, 왜? Linux의 경우 각 다 세부적인 것을 변경을 쉽게 하려하지만, FreeRTOS 나 작은 RTOS는 전체구조를 바꾸는게???    
+
+</br>
+
 ## JSON to Bin Encoding/Bin Decoding
 
 </br>
 
 처음 Flex 와 Bison 으로 구현을 생각했으나, JSON parsing 은 도 다 chatGPT가 구현을 함              
 현재 모든 생각/개념이 변경되어짐        
-추후 DSL(Domain Specific Language)(yaml)도???          
-
+   
+</br>
 
 * JSON to Bin Encoding/Decoding
     - JSON Parsing to Bin Encoding 기능 구현     
@@ -45,6 +50,11 @@ Linux 의 Device Tree Blob/Compiler (DTB/DTC) 와 libfdt 를 이용하여, 쉽�
 
 </br>    
 
+이 부분은 각 사람 보기 쉬운 언어이며, Description 언어기반으로 관리를 중점을 두지만, 
+이를 해석하고, 이해해야 하는 것은 기계이며, 이를 항상 어떻게 쓸지를 모색??  
+
+</br>    
+
 ESP-IDF의 경우, 별도의 yaml 을 자동으로 사용하는데, 이부분 확인   
 
 </br>    
@@ -53,11 +63,16 @@ ESP-IDF의 경우, 별도의 yaml 을 자동으로 사용하는데, 이부분 �
     [ESP-IDF](https://github.com/espressif/esp-idf/blob/master/examples/bluetooth/.build-test-rules.yml)        
     [ESP-IDF](https://github.com/espressif/esp-idf/blob/master/examples/build_system/.build-test-rules.yml)
 
+
+Cmake 빠른 자동 생성?? , 어떻게 보면 거의 Github Action 과도 비슷함??   
+
 </br>    
 
 * Android 의 XML  
     [Manifest.xml](https://developer.android.com/guide/topics/manifest/manifest-intro?hl=ko)   
     [manifest.xml](https://developer.android.com/guide/topics/manifest/manifest-element?hl=ko)         
+
+Android의 경우, 다양하게 사용 PDK에서 전체 빌드 하거나 App 빌드 
 
 </br>    
 
