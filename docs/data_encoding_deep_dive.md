@@ -5,9 +5,9 @@
 [Go Back](index.md)
 
 * Data Encoding   
-  * TLV 
-  * ASN.1 
-  * JSON + 심화
+  * TLV             
+  * ASN.1    --> 솔직히 이건 좀 무리 인듯 싶다 (ITU-T Encoding 방식이니) , TLV를 보니 ASN.1이 생각이 난다.        
+  * JSON + 심화  --> 이 부분 Network Endian 과 Pack 할지 안할지? 그리고 Compiler 의 영향 (32bit/64bit/16bit)      
 
 </br>
 
@@ -45,9 +45,9 @@
 
 ```
 ┌────────┬────────┬────────────────────┐
-│ Tag    │ Length │ Value │
+│ Tag    │ Length │ Value              │
 ├────────┼────────┼────────────────────┤
-│ 0x01 │ 0x04 │ 0xDEADBEEF │
+│ 0x01   │ 0x04   │ 0xDEADBEEF         │
 └────────┴────────┴────────────────────┘
 ```
 - 장점: 파싱 단순, MCU/RTOS에 적합, 고정 오버헤드
@@ -55,8 +55,13 @@
 - 사용: USIM/EAP-AKA/EMV, 임베디드 펌웨어 헤더 등
 
 </br>
+
 ## 4. ASN.1 개요와 DER 인코딩 예
+
 </br>
+
+ITU-T 문서를 봤다면, 모를 수 없으며, 이 부분은 좀 무리 인듯     
+
 
 - ASN.1은 **데이터 타입/구조를 정의**하는 IDL이며, BER/DER/CER 등 규칙으로 인코딩함
 - DER은 보안 표준(X.509 등)에 요구되는 **단일/정규화 인코딩**
@@ -89,6 +94,12 @@ SEQUENCE(10) { UTF8String("Lee"), INTEGER(42) }
   "age": 42
 }
 ```
+
+CBOR?? 
+
+처음 Flex 와 Bison으로 출발해서 , 이를 DTC 처럼 좀 복잡하게 Binary로 하려 했으나, 과연 필요한지 Flex가?   
+
+</br>
 
 ## 6. 환경별 선택 가이드
 
@@ -128,7 +139,36 @@ SEQUENCE(10) { UTF8String("Lee"), INTEGER(42) }
 | IDL (Interface Definition Language) | 데이터 및 인터페이스 정의 언어 | ASN.1, Thrift, Protobuf (.proto), CORBA IDL |
 | Serialization Format | 전송 가능한 바이트 형태로 인코딩 | DER, JSON, CBOR, TLV |
 
+</br>
+
+
+* DER · JSON · CBOR · TLV 비교   
+
+| 구분 | DER (Distinguished Encoding Rules) | JSON (JavaScript Object Notation) | CBOR (Concise Binary Object Representation) | TLV (Tag-Length-Value) |
+|------|-------------------------------------|------------------------------------|----------------------------------------------|-------------------------|
+| 형식 유형 | Binary, Schema-based | Text-based, Schema-less | Binary, Self-describing | Binary, Tag-based |
+| 기원 / 표준 | ASN.1 (ITU-T X.690) | ECMA-404 / RFC 8259 | RFC 8949 | ISO/IEC 7816, 3GPP, EMV 등 |
+| 주요 목적 | 보안 인증, 디지털 서명용 | 인간 친화적 데이터 표현 | 효율적 JSON 대체 | 최소 오버헤드의 단순 구조 |
+| 구조 단위 | Type + Length + Value | Key + Value | Major Type + Length + Value | Tag + Length + Value |
+| 스키마 의존성 | 강함 (ASN.1 명세 필요) | 없음 | 약함 (자기기술적) | 없음 |
+| 대표 사용 분야 | X.509 인증서, PKCS#7, TLS | REST API, Web, Config | IoT, CoAP, COSE | SIM, NFC, EAP-AKA, EMV |
+
+
+* DER  
+ASN.1 스키마에 따라 완전히 정형화된 이진 구조.
+
+* JSON <-> CBOR        
+JSON 구조를 이진화하고 타입 정보를 포함한 형태.
+
+* TLV     
+매우 단순한 Binary Mapping 구조
+
+
+
 **설명:**  
+
+</br>
+
 - ASN.1과 Protobuf는 *IDL + 인코딩 규칙*을 포함함.  
 - TLV와 JSON은 *순수 직렬화 포맷* 성격이 강함.
 
@@ -144,3 +184,6 @@ SEQUENCE(10) { UTF8String("Lee"), INTEGER(42) }
 | ASN.1 | 타입 안전성과 표준화 우수, 복잡도 존재 → 보안·인증용 적합 |
 | JSON | 가독성·생태계 우수, 바이너리 비효율 → 하이브리드 구성 권장 |
 | 현대적 조합 | **TLV(헤더) + JSON(페이로드) + ASN.1/DER(보안)** 형태의 계층 결합이 일반적 |
+
+
+</br>

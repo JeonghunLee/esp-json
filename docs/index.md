@@ -26,8 +26,9 @@ Linux 의 Device Tree Blob/Compiler (DTB/DTC) 와 libfdt 를 이용하여, 쉽�
 
 </br>
 
-이 부분은 과연 FreeRTOS에서 필요한가??
+이 부분은 과연 FreeRTOS에서 필요한가??             
 필요하다면, 왜? Linux의 경우 각 다 세부적인 것을 변경을 쉽게 하려하지만, FreeRTOS 나 작은 RTOS는 전체구조를 바꾸는게???    
+
 
 </br>
 
@@ -69,8 +70,8 @@ Cmake 빠른 자동 생성?? , 어떻게 보면 거의 Github Action 과도 비�
 </br>    
 
 * Android 의 XML  
-    [Manifest.xml](https://developer.android.com/guide/topics/manifest/manifest-intro?hl=ko)   
-    [manifest.xml](https://developer.android.com/guide/topics/manifest/manifest-element?hl=ko)         
+    [Manifest.xml-1](https://developer.android.com/guide/topics/manifest/manifest-intro?hl=ko)   
+    [manifest.xml-2](https://developer.android.com/guide/topics/manifest/manifest-element?hl=ko)         
 
 Android의 경우, 다양하게 사용 PDK에서 전체 빌드 하거나 App 빌드 
 
