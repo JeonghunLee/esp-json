@@ -47,8 +47,23 @@ Linux 의 Device Tree Blob/Compiler (DTB/DTC) 와 libfdt 를 이용하여, 쉽�
 
 ESP-IDF의 경우, 별도의 yaml 을 자동으로 사용하는데, 이부분 확인   
 
-[DSL 문법](./dsl_yamlvstoml.md)  
-[DSL Encoding](./data_encoding_comparison.md)        
-[DSL Encoding](./data_encoding_deep_dive.md)      
+</br>    
+
+* ESP-IDF 의 YAML        
+    [ESP-IDF](https://github.com/espressif/esp-idf/blob/master/examples/bluetooth/.build-test-rules.yml)        
+    [ESP-IDF](https://github.com/espressif/esp-idf/blob/master/examples/build_system/.build-test-rules.yml)
+
+</br>    
+
+* Android 의 XML  
+    [Manifest.xml](https://developer.android.com/guide/topics/manifest/manifest-intro?hl=ko)   
+    [manifest.xml](https://developer.android.com/guide/topics/manifest/manifest-element?hl=ko)         
+
+</br>    
+
+* DSL 문법 과 Encoding 
+    * [DSL 문법](./dsl_yamlvstoml.md)  
+    * [DSL Encoding](./data_encoding_comparison.md)         
+    * [DSL Encoding](./data_encoding_deep_dive.md)       
 
 </br> 
