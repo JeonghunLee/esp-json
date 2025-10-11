@@ -47,7 +47,8 @@ Linux 의 Device Tree Blob/Compiler (DTB/DTC) 와 libfdt 를 이용하여, 쉽�
 
 ESP-IDF의 경우, 별도의 yaml 을 자동으로 사용하는데, 이부분 확인   
 
-[DSL  (chatGPT)](./DSL_YAML_vs_TOML.md) 
-
+[DSL](./dsl_yaml_vs_toml.md)  
+[DSL Encoding](./data_encoding_comparison.md)        
+[DSL Encoding](./data_encoding_deep_dive.md)      
 
 </br> 

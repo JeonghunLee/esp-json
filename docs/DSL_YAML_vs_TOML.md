@@ -6,14 +6,21 @@
 
 </br>
 
-## 1. 개요
+## 1. DSL 개요
 
-DSL은 **특정 도메인(분야)에 특화된 언어**를 의미하며,  
-설정 파일 포맷인 **YAML**과 **TOML**도 대표적인 DSL로 분류됩니다.
+</br>
+
+DSL(Domain-Specific Language)은 **특정 도메인(분야)에 특화된 언어**를 의미하며,  
+설정 파일 포맷인 **YAML**과 **TOML**도 대표적인 DSL로 분류.
+거의 JSON에서 다 같이 출발한 것 같음   
 
 ---
 
+</br>
+
 ## 2. YAML vs TOML 개요 비교
+
+</br>
 
 | 항목 | **YAML (YAML Ain’t Markup Language)** | **TOML (Tom’s Obvious Minimal Language)** |
 |------|----------------------------------------|--------------------------------------------|
@@ -23,6 +30,8 @@ DSL은 **특정 도메인(분야)에 특화된 언어**를 의미하며,
 | 표준화 상태 | 느슨한 비공식 표준 | 명확한 1.0.0 공식 표준 존재 |
 
 ---
+
+</br>
 
 ## 3. 문법 비교 예시
 
@@ -43,6 +52,8 @@ features:
   - sensor
 ```
 
+</br>
+
 ### TOML
 ```toml
 [server]
@@ -56,6 +67,8 @@ timeout = 5.0
 
 features = ["wifi", "bluetooth", "sensor"]
 ```
+
+</br>
 
 ---
 
@@ -71,7 +84,7 @@ features = ["wifi", "bluetooth", "sensor"]
 | 문법 오류 허용 | 민감함 | 엄격하지만 일관적 |
 | 표준화 | 비공식 | v1.0.0 정식 표준 |
 
----
+
 
 ## 5. 장단점 비교
 
@@ -81,7 +94,7 @@ features = ["wifi", "bluetooth", "sensor"]
 | 단점 | - 공백/들여쓰기 오류 발생<br>- 복잡한 구조는 가독성 저하 | - 복잡한 구조 표현 제한<br>- 배열+구조체 조합 불편 |
 | 대표 사용처 | DevOps, 임베디드 설정, 배포 시스템 | AI Agent, Python/Rust 설정, BSP 세팅 |
 
----
+
 
 ## 6. 선택 가이드
 
@@ -92,7 +105,7 @@ features = ["wifi", "bluetooth", "sensor"]
 | 단일 앱 설정 | **TOML** | 간결한 구조 유지 |
 | 복잡한 시스템 관리(K8s 등) | **YAML** | 계층형 데이터 표현에 강함 |
 
----
+
 
 ## 7. 요약
 
@@ -104,7 +117,7 @@ features = ["wifi", "bluetooth", "sensor"]
 | 표준화 정도 | ★ | ★★★ |
 | AI Agent / Tool Chain 적합성 | △ | ◎ |
 
----
+
 
 ## 8. 결론
 
@@ -112,4 +125,8 @@ features = ["wifi", "bluetooth", "sensor"]
 - **TOML** → 단순하고 일관된 설정 관리에 강함  
 
 > ✅ 즉, **“사람이 읽기 쉬운 DSL”은 YAML**,  
-> ✅ **“기계가 안정적으로 처리하기 쉬운 DSL”은 TOML** 이라고 정리할 수 있습니다.
+> ✅ **“기계가 안정적으로 처리하기 쉬운 DSL”은 TOML** 이라고 정리
+
+
+[1.개요](#1-dsl-개요)
+[Go Back](./index.md)
