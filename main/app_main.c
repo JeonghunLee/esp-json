@@ -20,6 +20,15 @@ static const char* TAG = "APP";
 
 
 
+
+/**
+ * @brief Initialize system services required by the demo.
+ *
+ * This initializes NVS and mounts the SPIFFS partition labeled "json" at
+ * `/spiffs`. On failure the function logs an error and returns false.
+ *
+ * @return true on success, false on failure.
+ */
 static bool system_init(void)
 {
     esp_err_t ret = nvs_flash_init();
@@ -51,6 +60,15 @@ static bool system_init(void)
 }
 
 
+/**
+ * @brief Read a text file from the given path into a heap buffer.
+ *
+ * The returned buffer is NUL-terminated and must be freed by the caller.
+ * On failure NULL is returned and an error is logged.
+ *
+ * @param path Path to the file to read (e.g. "/spiffs/test.json").
+ * @return Pointer to malloc'ed NUL-terminated buffer on success, or NULL.
+ */
 static char *read_json_file(const char *path)
 {
     FILE *fp = fopen(path, "r");
@@ -74,6 +92,18 @@ static char *read_json_file(const char *path)
 
 
 
+/**
+ * @brief Encode JSON text into BJSON using the public encoder API.
+ *
+ * This convenience wrapper calls `bjson_encode_from_json` and logs any
+ * encoder errors. The caller provides the output buffer `out` of size
+ * `out_max`.
+ *
+ * @param json NUL-terminated JSON text to encode.
+ * @param out Output buffer for BJSON data.
+ * @param out_max Capacity of `out` in bytes.
+ * @return Number of bytes written to `out` on success, 0 on failure.
+ */
 static size_t bjson_encode_from_text(const char *json, uint8_t *out, size_t out_max)
 {
     size_t out_len = 0;
@@ -89,14 +119,39 @@ static size_t bjson_encode_from_text(const char *json, uint8_t *out, size_t out_
 
 
 
+/**
+ * @brief Read a 32-bit unsigned little-endian value from a byte pointer.
+ *
+ * @param p Pointer to at least 4 bytes.
+ * @return Decoded 32-bit little-endian value.
+ */
 static inline uint32_t rd_u32le(const uint8_t* p) {
     return (uint32_t)p[0] | ((uint32_t)p[1]<<8) | ((uint32_t)p[2]<<16) | ((uint32_t)p[3]<<24);
 }
+/**
+ * @brief Align a pointer upwards to the next 4-byte boundary.
+ *
+ * This is used when walking BJSON entries which are padded to 4-byte
+ * alignment.
+ *
+ * @param p Input pointer.
+ * @return Pointer aligned to 4 bytes at or after `p`.
+ */
 static inline const uint8_t* align4p(const uint8_t* p) {
     uintptr_t x = (uintptr_t)p;
     return (const uint8_t*)((x + 3) & ~(uintptr_t)3);
 }
 
+/**
+ * @brief Pretty-print a BJSON document to the ESP log.
+ *
+ * The function opens the document with `bjd_open` and iterates entries,
+ * logging key/value pairs. Defensive checks are performed to avoid
+ * reading beyond the buffer.
+ *
+ * @param data Pointer to BJSON buffer.
+ * @param len Length of the buffer in bytes.
+ */
 static void bjson_dump_document(const uint8_t *data, size_t len)
 {
     bjd_doc_t doc;
@@ -184,6 +239,15 @@ static void bjson_dump_document(const uint8_t *data, size_t len)
 
 
 
+/**
+ * @brief Encode JSON text into BJSON and dump the resulting document.
+ *
+ * Allocates a temporary buffer from heap (PSRAM-aware via
+ * `heap_caps_malloc`) and frees it before returning. Errors are logged
+ * and cause an early return.
+ *
+ * @param json_text NUL-terminated JSON text to process.
+ */
 static void bjson_process(const char *json_text)
 {
 
@@ -208,6 +272,12 @@ static void bjson_process(const char *json_text)
 
 
 
+/**
+ * @brief Application entry point for the ESP-JSON demo.
+ *
+ * Initializes system services, reads `/spiffs/test.json`, runs the
+ * encoder/decoder demo, and cleans up.
+ */
 void app_main(void)
 {
     ESP_LOGI(TAG, "=== ESP-JSON Demo Start ===");

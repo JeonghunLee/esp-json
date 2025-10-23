@@ -8,8 +8,29 @@
 static int is_ident0(int c){ return isalpha(c) || (c=='_'); }
 static int is_ident(int c){ return isalnum(c) || (c=='_'); }
 
+/**
+ * @brief Skip whitespace in the parser context.
+ *
+ * Advances `p->pos` past spaces, tabs, CR and LF.
+ *
+ * @param p Parser context.
+ * @return Always returns 0 (helper convenience).
+ */
 static int  ws(pctx_t* p){ while (p->pos<p->len && (p->json[p->pos]==' '||p->json[p->pos]=='\t'||p->json[p->pos]=='\r'||p->json[p->pos]=='\n')) p->pos++; return 0; }
+/**
+ * @brief Peek current character or -1 if at end.
+ *
+ * @param p Parser context.
+ * @return Current character as unsigned char or -1 when at end.
+ */
 static int  ch(pctx_t* p){ return (p->pos<p->len)? (unsigned char)p->json[p->pos] : -1; }
+/**
+ * @brief Consume the given character if it is next (after skipping ws).
+ *
+ * @param p Parser context.
+ * @param c Character to match and consume.
+ * @return 1 if consumed, 0 otherwise.
+ */
 static int  eat(pctx_t* p, char c){ ws(p); if (ch(p)==c){ p->pos++; return 1; } return 0; }
 
 static void* a_alloc(pctx_t* p, size_t n){
@@ -20,6 +41,17 @@ static char* a_dup(pctx_t* p, const char* s, size_t n){
   char* r = (char*)a_alloc(p, n+1); if(!r) return NULL; memcpy(r,s,n); r[n]=0; return r;
 }
 
+/**
+ * @brief Parse a string or unquoted identifier and duplicate into arena.
+ *
+ * Handles quoted strings with simple escape skipping. For unquoted
+ * identifiers it accepts [A-Za-z_][A-Za-z0-9_]*.
+ *
+ * @param p Parser context.
+ * @param ok[out] Set to 1 on success, 0 on parse failure.
+ * @return Pointer into arena containing NUL-terminated string on
+ *         success, or NULL on allocation/parse error.
+ */
 static char* parse_string(pctx_t* p, int* ok){
   *ok=0; ws(p);
   if (eat(p,'"')){ // quoted
@@ -27,7 +59,7 @@ static char* parse_string(pctx_t* p, int* ok){
     while (p->pos < p->len){
       char c = p->json[p->pos++];
       if (c=='"'){ size_t n = (p->pos-1) - start; char* s=a_dup(p,&p->json[start],n); if(!s) return NULL; *ok=1; return s; }
-      if (c=='\\'){ if (p->pos>=p->len) return NULL; p->pos++; } // 간단 이스케이프 통과
+      if (c=='\\'){ if (p->pos>=p->len) return NULL; p->pos++; } // simple escape skip
     }
     return NULL;
   }
@@ -38,6 +70,15 @@ static char* parse_string(pctx_t* p, int* ok){
   *ok=1; return a_dup(p, &p->json[start], p->pos-start);
 }
 
+/**
+ * @brief Parse an integer literal from the current position.
+ *
+ * Supports optional +/-, and returns 0 on parse failure.
+ *
+ * @param p Parser context.
+ * @param out[out] Parsed integer on success.
+ * @return 1 on success, 0 on failure.
+ */
 static int parse_int(pctx_t* p, long long* out){
   ws(p);
   size_t start = p->pos; int c=ch(p);
@@ -75,6 +116,17 @@ static int push_kv(pctx_t* p, ast_kv_t kv){
   return 1;
 }
 
+/**
+ * @brief Parse a single object member (key:value) into the AST.
+ *
+ * Validates key format via `classify_key` and performs range checks
+ * for integer types. On allocation or parse error `*err` is set and
+ * the function returns 0.
+ *
+ * @param p Parser context.
+ * @param err[out] Non-zero on error.
+ * @return 1 on success, 0 on parse or allocation error.
+ */
 static int parse_member(pctx_t* p, int* err){
   *err=0;
   int ok=0; char* key = parse_string(p,&ok); if (!ok || !key){ *err=1; return 0; }
@@ -107,6 +159,16 @@ static int parse_member(pctx_t* p, int* err){
   return 1;
 }
 
+/**
+ * @brief Parse a JSON-like object into the parser context AST.
+ *
+ * Accepts an object wrapped by '{' and '}', allows empty objects.
+ * On parse error `*err` is set and the function returns 0.
+ *
+ * @param p Parser context.
+ * @param err[out] Non-zero on parse error.
+ * @return 1 on success, 0 on failure.
+ */
 static int parse_object(pctx_t* p, int* err){
   if (!eat(p,'{')){ *err=1; return 0; }
   ws(p);
@@ -124,6 +186,18 @@ static int parse_object(pctx_t* p, int* err){
 static void w32(uint8_t* p, uint32_t v){ p[0]=v&0xFF; p[1]=(v>>8)&0xFF; p[2]=(v>>16)&0xFF; p[3]=(v>>24)&0xFF; }
 static int  align4sz(int n){ return (n+3)&~3; }
 
+/**
+ * @brief Encode the parser AST into the BJSON binary format.
+ *
+ * Writes header, entry count and each key/value encoded and 4-byte
+ * padded. Returns 1 on success.
+ *
+ * @param p Parser context with built AST.
+ * @param out Output buffer to write BJSON data.
+ * @param cap Capacity of the output buffer.
+ * @param out_len[out] Number of bytes written on success.
+ * @return 1 on success, 0 if buffer is not large enough.
+ */
 static int encode_ast(const pctx_t* p, uint8_t* out, size_t cap, size_t* out_len){
   uint8_t* cur=out; uint8_t* end=out+cap;
   if (cur+12 > end) return 0;
