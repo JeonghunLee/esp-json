@@ -2,12 +2,14 @@
 
 </br>
 
-[Go Back](index.md)
-
 * Data Encoding   
   * TLV             
   * ASN.1    --> 솔직히 이건 좀 무리 인듯 싶다 (ITU-T Encoding 방식이니) , TLV를 보니 ASN.1이 생각이 난다.        
   * JSON + 심화  --> 이 부분 Network Endian 과 Pack 할지 안할지? 그리고 Compiler 의 영향 (32bit/64bit/16bit)      
+
+</br>
+
+[Go Back Main Index](index.md)
 
 </br>
 

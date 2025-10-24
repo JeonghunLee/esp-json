@@ -1,11 +1,14 @@
-# 🧩 DSL (Domain-Specific Language)
+# DSL (Domain-Specific Language)
 
 </br>
 
-[Go Back](index.md)
-
-요즘 Github Action 부터 Cmake 의 기술언어? 부터 다양하게 사용,        
+요즘 Github Action 부터 Cmake 의 기술언어 부터 다양하게 사용,        
 이유는 사람이 보기 편하며, 이 기반으로 Parsing해서 각 쉽게 적용하여 진행        
+JSON 과 같이 항상 비교하며 생각 중    
+
+</br>
+
+[Go Back Main Index](index.md)
 
 </br>
 
